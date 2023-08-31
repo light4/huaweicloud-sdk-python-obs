@@ -953,7 +953,6 @@ class _BasicClient(object):
         return 300 <= status < 400 and status != 304 and const.LOCATION_HEADER.lower() in headers
 
     def _parse_xml_internal(self, result, methodName=None, chuckSize=const.READ_ONCE_LENGTH, readable=False):
-        origin_result = deepcopy(result)
         status = util.to_int(result.status)
         reason = result.reason
         code = None
@@ -966,6 +965,7 @@ class _BasicClient(object):
         for k, v in result.getheaders():
             headers[k.lower()] = v
         responseData = self._prepare_response_data(result, chuckSize)
+        origin_result = deepcopy(responseData)
 
         header = self._rename_response_headers(headers)
         isJson = headers.get(const.CONTENT_TYPE_HEADER.lower(), 'xml') == const.MIME_TYPES.get('json')
