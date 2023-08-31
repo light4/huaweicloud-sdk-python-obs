@@ -13,9 +13,9 @@
 # specific language governing permissions and limitations under the License.
 
 import time
-from obs.const import LONG, BASESTRING
-from obs import util
-from obs import progress
+
+from obs import progress, util
+from obs.const import BASESTRING, LONG
 
 __all__ = [
     'BaseModel',
@@ -167,10 +167,10 @@ class GetResult(BaseModel):
     allowedAttr = {'status': int, 'reason': BASESTRING, 'errorCode': BASESTRING, 'errorMessage': BASESTRING,
                    'body': object, 'requestId': BASESTRING, 'hostId': BASESTRING, 'resource': BASESTRING,
                    'header': list,
-                   'indicator': BASESTRING}
+                   'indicator': BASESTRING, 'origin_result': object}
 
     def __init__(self, code=None, message=None, status=None, reason=None, body=None, requestId=None, hostId=None,
-                 resource=None, header=None, indicator=None):
+                 resource=None, header=None, indicator=None, origin_result=None):
         self.status = status
         self.reason = reason
         self.errorCode = code
@@ -181,6 +181,7 @@ class GetResult(BaseModel):
         self.resource = resource
         self.header = header
         self.indicator = indicator
+        self.origin_result = origin_result
 
 
 class CompletePart(BaseModel):
@@ -492,7 +493,7 @@ class CreateBucketHeader(BaseModel):
                    "isFusionAllowUpgrade": bool, "isFusionAllowAlternative": bool}
 
     def __init__(self, aclControl=None, storageClass=None, extensionGrants=None,
-                 availableZone=None, epid=None, isPFS=False, redundancy=None, 
+                 availableZone=None, epid=None, isPFS=False, redundancy=None,
                  isFusionAllowUpgrade=None, isFusionAllowAlternative=None):
         """
         Headers that can be carried during bucket creation
@@ -1088,7 +1089,7 @@ class ListPartsResponse(BaseModel):
 
 
 class GetBucketMetadataResponse(BaseModel):
-    allowedAttr = {'storageClass': BASESTRING, 'accessContorlAllowOrigin': BASESTRING, 
+    allowedAttr = {'storageClass': BASESTRING, 'accessContorlAllowOrigin': BASESTRING,
                    'accessContorlAllowHeaders': BASESTRING,
                    'accessContorlAllowMethods': BASESTRING,
                    'accessContorlExposeHeaders': BASESTRING,

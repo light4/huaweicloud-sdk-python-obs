@@ -952,6 +952,7 @@ class _BasicClient(object):
         return 300 <= status < 400 and status != 304 and const.LOCATION_HEADER.lower() in headers
 
     def _parse_xml_internal(self, result, methodName=None, chuckSize=const.READ_ONCE_LENGTH, readable=False):
+        origin_result = result
         status = util.to_int(result.status)
         reason = result.reason
         code = None
@@ -997,7 +998,8 @@ class _BasicClient(object):
                                 status, reason, code, message, requestId)
 
         ret = GetResult(code=code, message=message, status=status, reason=reason, body=body,
-                        requestId=requestId, hostId=hostId, resource=resource, header=header, indicator=indicator)
+                        requestId=requestId, hostId=hostId, resource=resource, header=header, indicator=indicator,
+                        origin_result=origin_result)
 
         if not readable:
             if self._is_redirect_exception(status, headers):
