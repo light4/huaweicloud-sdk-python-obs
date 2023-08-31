@@ -25,6 +25,7 @@ import time
 import traceback
 import json
 from inspect import isfunction
+from copy import deepcopy
 from obs import auth, const, convertor, loadtoken, locks, progress, util
 from obs.bucket import BucketClient
 from obs.cache import LocalCache
@@ -952,7 +953,7 @@ class _BasicClient(object):
         return 300 <= status < 400 and status != 304 and const.LOCATION_HEADER.lower() in headers
 
     def _parse_xml_internal(self, result, methodName=None, chuckSize=const.READ_ONCE_LENGTH, readable=False):
-        origin_result = result
+        origin_result = deepcopy(result)
         status = util.to_int(result.status)
         reason = result.reason
         code = None
