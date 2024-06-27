@@ -1294,9 +1294,11 @@ class ObsClient(_BasicClient):
                 If this parameter is left blank, both buckets and parallel file systems will be listed.
         :return: A bucket list
         """
-        pathArgs = None
-        if maxKeys or marker:
-            pathArgs = {'marker': marker, 'max-keys': maxKeys}
+        if marker:
+            pathArgs = {'marker':marker, 'max-keys':maxKeys}
+        else:
+            pathArgs = {'max-keys':maxKeys}
+
         if self.is_cname:
             raise Exception('listBuckets is not allowed in custom domain mode')
         return self._make_get_request(methodName='listBuckets', pathArgs=pathArgs, extensionHeaders=extensionHeaders,
